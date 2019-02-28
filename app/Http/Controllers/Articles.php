@@ -4,42 +4,44 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Article;
+use App\Http\Resources\ArticleResource;
+use App\Http\Resources\ArticleListResource;
+
 
 
 class Articles extends Controller
 {
     public function index()
     {
-        return Article::all();
+        return ArticleListResource::collection(Article::all());
     }
     
 
      public function store(Request $request)
     {
         $data = $request->all();
-        return Article::create($data);
+        $article = Article::create($data);
+        return new ArticleResource($article);
     }
 
     
-    public function show($id)
+    public function show(Article $article)
     {
-        return Article::find($id);
+        return new ArticleResource($article);
     }
 
    
-    public function update(Request $request, $id)
+    public function update(Request $request, Article $article)
     {
-        $article = Article::find($id);
         $data = $request->all();
         $article->fill($data)->save();
-        return $article;
+        return new ArticleResource($article);
     }
 
     
-    public function destroy($id)
+    public function destroy(Article $article)
     {
-        $article = Article::find($id);
-        return response(null, 204);
         $article->delete();
+        return response(null, 204);
     }
 }
