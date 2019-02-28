@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Article;
 use App\Http\Resources\ArticleResource;
 use App\Http\Resources\ArticleListResource;
+use App\Http\Requests\ArticleRequest;
+
 
 
 
@@ -17,7 +19,7 @@ class Articles extends Controller
     }
     
 
-     public function store(Request $request)
+     public function store(ArticleRequest $request)
     {
         $data = $request->all();
         $article = Article::create($data);
@@ -31,7 +33,7 @@ class Articles extends Controller
     }
 
    
-    public function update(Request $request, Article $article)
+    public function update(ArticleRequest $request, Article $article)
     {
         $data = $request->all();
         $article->fill($data)->save();
