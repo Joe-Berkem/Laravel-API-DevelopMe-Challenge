@@ -13,6 +13,7 @@ class ArticleResource extends JsonResource
             "id" => $this->id,
             "title" => $this->title,
             "article" => $this->article,
+            "tags" => $this->tags->pluck("name"),
             ];            
     }
 }
