@@ -10,8 +10,20 @@ class Article extends Model
 
     public function comments()
     {
-
-    return $this->hasMany(Comment::class);
+        return $this->hasMany(Comment::class);
     }
+
+    public function tags()
+    {
+        return $this->belongsToMany(Tag::class);
+    }
+
+    public function setTags(array $strings)
+    {
+        $tags = Tag::fromStrings($strings);
+        $this->tags()->sync($tags->pluck("id")->all());
+        return $this;
+    }
+    
 
 }

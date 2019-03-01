@@ -7,8 +7,7 @@ use App\Article;
 use App\Http\Resources\ArticleResource;
 use App\Http\Resources\ArticleListResource;
 use App\Http\Requests\ArticleRequest;
-
-
+use App\Tag;
 
 
 class Articles extends Controller
@@ -21,8 +20,8 @@ class Articles extends Controller
 
      public function store(ArticleRequest $request)
     {
-        $data = $request->all();
-        $article = Article::create($data);
+        $data = $request->only(["title", "article"]);
+        $article = Article::create($data)->setTags($request->get("tags"));
         return new ArticleResource($article);
     }
 
@@ -35,8 +34,9 @@ class Articles extends Controller
    
     public function update(ArticleRequest $request, Article $article)
     {
-        $data = $request->all();
+        $data = $request->only(["title", "article"]);
         $article->fill($data)->save();
+        $article->setTags($request->get("tags"));
         return new ArticleResource($article);
     }
 

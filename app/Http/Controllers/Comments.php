@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Article;
 use App\Comment;
 use App\Http\Requests\CommentRequest;
+use App\Http\Resources\CommentResource;
+
 
 
 class Comments extends Controller
@@ -13,14 +15,14 @@ class Comments extends Controller
     
     public function index(Article $article)
     {
-        return $article->comments;
+        return CommentResource::collection($article->comments);
     }
 
     public function store(CommentRequest $request, Article $article)
     {
         $comment = new Comment($request->all());
         $article->comments()->save($comment);
-        return $comment;
+        return new CommentResource($comment);
     }
 
    
